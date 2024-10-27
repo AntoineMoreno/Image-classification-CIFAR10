@@ -2,7 +2,7 @@
 
 This project is the assignment part of the Deep Learning course followed 
 at DTSI. Our team chose to work on the famous CIFAR10 dataset. We tried to 
-develop our own alogrithm to fulfill an image classification task and compare with pretrained models.
+develop our own alogrithm to fulfill an image classification task and compare pretrained models.
 
 # Dataset
 
@@ -16,9 +16,9 @@ distillation.ipynb)
 
 # Requirements and installation
 
-The python version used is 3.10. The requirements.txt file contains all the package we use to make the project. These packages aren't configured to handle GPU in order to ensure compatibility across platforms.
+The python version used is 3.10. The requirements.txt file contains all the packages we used to make the project. These packages aren't configured to handle GPU in order to ensure compatibility across platforms.
 
-You can create a docker image of the project with the command : "docker build -t <name_container>" using the Dockerfile and launch it with "docker run -p 5000:5000 <name_container>". In a web adress, at the adress 0.0.0.0:5000, you will be able to test our algorithm (without transfer learning) on image of resolution 32x32.
+You can create a docker image of the project with the command : "docker build -t <name_container>" and by using the Dockerfile and launch it with "docker run -p 5000:5000 <name_container>". In a web adress, at the adress 0.0.0.0:5000, you will be able to test our algorithm (without transfer learning) on image of resolution 32x32.
 
 
 # Models 

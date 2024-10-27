@@ -4,6 +4,10 @@ This project is the assignment part of the Deep Learning course followed
 at DTSI. Our team chose to work on the famous CIFAR10 dataset. We tried to 
 develop our own alogrithm to fulfill the classification task.
 
+# Requirements
+
+The python version used is 3.9.13
+
 # Dataset
 
 This dataset can be downloaded from Huggings-Face on the web page : 

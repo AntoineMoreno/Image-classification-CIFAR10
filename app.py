@@ -71,6 +71,8 @@ preprocess = transforms.Compose([
     transforms.ToTensor()
 ])
 
+
+#Set the default page to be the one from intemplates/index.html
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -78,6 +80,7 @@ def index():
         return redirect(url_for('predict'))
     return render_template('index.html')
 
+#Handle the image uploading
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
@@ -93,15 +96,10 @@ def predict():
             error_message = 'No file selected'
             return render_template('index.html', prediction=error_message), 400
 
-        # Read the image
+        # Read the image and prepare it to be fed into the model
         img = Image.open(io.BytesIO(file.read())).convert('RGB')
         img_t = preprocess(img)
         batch_t = torch.unsqueeze(img_t, 0)
-    #     .permute(1,2,0)
-    #     img_array = np.asarray(img, np.float32)
-    #     img_array=np.expand_dims(img_array, axis=0)
-    #   # Add batch and channel dimensions
-    #     img_tensor= torch.from_numpy(img_array)
 
         # Make prediction
         with torch.no_grad():

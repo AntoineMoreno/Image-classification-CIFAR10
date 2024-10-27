@@ -6,8 +6,22 @@ import torchvision.transforms as transforms
 from PIL import Image
 import io
 import logging
+import numpy as np
 
 app = Flask(__name__)
+
+labels_to_names = {
+    0 : "airplane",
+    1 : "automobile",
+    2 : "bird", 
+    3 : "cat", 
+    4 : "deer", 
+    5 : "dog", 
+    6 : "frog", 
+    7 : "horse", 
+    8 : "ship", 
+    9 : "truck"
+}
 
 logging.basicConfig(level=logging.INFO)
 
@@ -52,7 +66,8 @@ model.load_state_dict(torch.load('model.pth', map_location=torch.device('cpu')))
 model.eval()  # Set model to evaluation mode
 
 # Define image transformations
-transform = transforms.Compose([
+preprocess = transforms.Compose([
+    transforms.Resize((32,32)),
     transforms.ToTensor()
 ])
 
@@ -79,19 +94,20 @@ def predict():
             return render_template('index.html', prediction=error_message), 400
 
         # Read the image
-        img = Image.open(io.BytesIO(file.read()))
-
-        # Apply transformations
-        img = transform(img)
-
-        # Add batch dimension
-        img = img.unsqueeze(0)
+        img = Image.open(io.BytesIO(file.read())).convert('RGB')
+        img_t = preprocess(img)
+        batch_t = torch.unsqueeze(img_t, 0)
+    #     .permute(1,2,0)
+    #     img_array = np.asarray(img, np.float32)
+    #     img_array=np.expand_dims(img_array, axis=0)
+    #   # Add batch and channel dimensions
+    #     img_tensor= torch.from_numpy(img_array)
 
         # Make prediction
         with torch.no_grad():
-            outputs = model(img)
-            _, predicted = torch.max(outputs.data, 1)
-            predicted_class = predicted.item()
+            output = model(batch_t)
+            _, predicted = torch.max(output.data, 1)
+            predicted_class = labels_to_names[predicted[0].item()]
 
         # Return the result on the web page
         return render_template('index.html', prediction=predicted_class), 200
